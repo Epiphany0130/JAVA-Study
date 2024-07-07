@@ -32,7 +32,7 @@ public class MiGong {
 	}
 }
 
-clsss T {
+class T {
 	//使用递归回溯的思想解决
 	//findWay方法就是专门来找出迷宫的路径
 	//如果找到，就返回True，否则返回False
@@ -57,7 +57,7 @@ clsss T {
 					return true;
 				} else if(findWay(map, i - 1, j)){	//上
 					return true;
-				} else if(findWay(map, i - 1, j)){	//左
+				} else if(findWay(map, i, j - 1)){	//左
 					return true;
 				} else {
 					map[i][j] = 3;
