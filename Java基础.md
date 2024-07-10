@@ -5459,3 +5459,1057 @@ Ctrl + B
 Ctrl + Alt + V
 ```
 
+## 包
+
+### 三大作用
+
+1. 区分相同名字的类
+2. 当类很多时，可以很好的管理类
+3. 控制访问范围
+
+### 基本语法
+
+```java
+package com.hspedu;
+```
+
+1. package 关键字，表示打包
+2. com.hspedu 表示包名
+
+### 包原理
+
+包的本质实际上就是创建不同的文件夹来保存类文件
+
+### 命名
+
+规则：
+
+​	只能包含数字、字母、下划线、小圆点，但不能用数字开头，不能是关键字或保留字
+
+规范：
+
+​	一般是 小写字母 + 小圆点
+
+```
+com.公司名.项目名.业务模块名
+eg:	com.hspedu.oa.model;
+	com.hspedu.oa.controller;
+```
+
+```
+eg:
+com.sina.crm.user	//用户模块
+com.sina.crm.order	//订单模块
+com.sina.crm.utils	//工具类
+```
+
+### 常用的包
+
+一个包下，包含很多的类，Java 中常用的包有：
+
+```
+java.lang.*	//lang 包是基本包，默认引入，不需要再引入
+java.util.*	//util 包，系统提供的工具包，工具类，使用 Scanner
+java.net.*	//网络包，网络开发
+java.awt.*	//是做 java 的界面包，GUI
+```
+
+### 引入包
+
+语法
+
+```java
+import 包;
+```
+
+我们引入一个包的主要目的是要使用该包下面的类
+
+比如
+
+```java
+import java.util.Scanner;
+```
+
+就只是引入一个类 Scanner
+
+```java
+import java.util.*
+```
+
+表示将 java.util 包所有都引入
+
+案例：使用系统提供的 Arrays 完成数组排序[com.hspedu.pkg: Import01.java]
+
+```java
+package com.hspedu.pkg;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+public class Import01 {
+
+    public static void main(String[] args) {
+
+        //使用系统提供的 Arrays 完成数组排序
+        int[] arr = {-1, 20, 2, 13, 3};
+
+        Arrays.sort(arr);
+        
+        //输出结果
+        for (int i = 0; i < arr.length; i++) {
+            System.out.printf(arr[i] + "\t");
+        }
+    }
+}
+```
+
+### 细节
+
+[PkgDetail.java]
+
+1. package 的作用是生命当前类所在的包，需要放在 class 的最上面，一个类中最多只有一句 package
+2. import 指令位置放在 package 的下面，在类定义前面，可以有多句且没有顺序要求
+
+```java
+//package 的作用是生命当前类所在的包，需要放在 class 的最上面，一个类中最多只有一句 package
+package com.hspedu.pkg;
+//import 指令位置放在 package 的下面，在类定义前面，可以有多句且没有顺序要求
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class PkgDetail {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] arr = {0, -1, 1};
+        Arrays.sort(args);
+    }
+}
+
+```
+
+## 访问修饰符
+
+[com.hspedu.modifier: ]
+
+Java 提供了四中访问修饰符号，用于控制方法和属性的访问权限：
+
+1. 公开级别： 用 public 修饰，对外公开
+2. 受保护级别：用 protected 修饰，对子类和同一个包中的类公开
+3. 默认级别：没有修饰符号，向同一个包的类公开
+4. 私有级别：用 private 修饰，只有类和本身可以访问，不对外公开
+
+### 访问范围
+
+| 访问级别 | 访问控制修饰符 | 同类 | 同包 | 子类 | 不同包 |
+| -------- | -------------- | ---- | ---- | ---- | ------ |
+| 公开     | public         | ✔    | ✔    | ✔    | ✔      |
+| 受保护   | protected      | ✔    | ✔    | ✔    | ✖      |
+| 默认     | 没有修饰符     | ✔    | ✔    | ✖    | ✖      |
+| 私有     | private        | ✔    | ✖    | ✖    | ✖      |
+
+### 注意事项
+
+1. 修饰符可以用来修饰类中的属性，成员方法以及类
+2. 只有默认的和 public 才能修饰类，并且遵循上述访问权限的特点
+3. 成员方法的访问规则和属性完全一样
+
+## 面向对象编程三大特征
+
+面向对象编程有三大特征：封装、继承和多态
+
+### 封装
+
+封装（**encap**sulation）就是把抽象初的数据 [ 属性 ] 和对数据的操作 [ 方法 ] 封装在一起，数据被保护在内部，程序的其他部分只有通过被授权的操作 [ 方法 ] ，才能对数据进行操作
+
+#### 好处
+
+1. 隐藏实现细节
+2. 可以对数据进行验证，保证安全合理
+
+#### 实现步骤
+
+1. 将属性进行私有化private【外部不能直接修改属性】
+
+2. 提供一个公共的 (public)set 方法，用于对属性判断并赋值
+
+   ```java
+   public void SetXxx(类型 参数名) {	//Xxx 表示某个属性
+       //加入数据验证的业务逻辑
+       属性 = 参数名;
+   }
+   ```
+
+3. 提供一个公共的 get 方法，用于获取属性的值
+
+   ```java
+   public XX getXxx() {	//权限判断
+       return xx
+   }
+   ```
+
+#### 快速入门
+
+看一个小程序 [ com.hspedu.encap: Encapsulation01.java ] 不能随便查看人的年龄、工资等隐私，并对设置的年龄进行合理的验证。年龄合理就设置，否则给默认
+
+年龄必须在 1 --- 120，年龄、工资不能直接查看，name 的长度在 2 --- 6 字符之间
+
+```java
+package com.hspedu.encap;
+
+public class Encapsulation01 {
+
+    public static void main(String[] args) {
+        Person person = new Person();
+        person.setName("jack");
+        person.setAge(30);
+        person.setSalary(30000);
+
+        System.out.println(person.info());
+
+        //如果用构造器指定属性
+        Person person1 = new Person("smilt", 20, 50000);
+        System.out.println("=====smith=====");
+        System.out.println(person1.info());
+    }
+}
+
+class Person {
+    public String name;     //名字公开
+    private int age;        //age 私有化
+    private double salary;  //salary 私有化
+
+    //构造器 - 无参
+    public Person() {
+    }
+    //构造器 - 含参
+    public Person(String name, int age, double salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        //将 set 方法写在构造器中，这样仍可以验证
+        setName(name);
+        setAge(age);
+        setSalary(salary);
+    }
+
+
+    //set 和 get 的快捷键，Alt + Insert
+    //自动生成后根据要求完善代码
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        //对数据的校验，相当于增加了业务逻辑
+        if(name.length() >= 2 && name.length() <= 6) {
+            this.name = name;
+        } else {
+            System.out.println("名字的长度不对，需要(2-6)个字符，给默认名字");
+            this.name = "张三";
+        }
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if(age >= 1 && age <= 120) {
+            this.age = age;
+        } else {
+            System.out.println("你设置的年龄不对，需要在(1-120)，给默认年龄18");
+            this.age = 18;  //给一个默认年龄
+        }
+    }
+
+    public double getSalary() {
+        //可以增加对当前对象的权限判断
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    //写一个方法，返回属性信息
+    public String info() {
+        return "Name: " + name + ", Age: " + age + ", Salary: " + salary;
+    }
+}
+```
+
+### 封装练习
+
+[com.hspedu.encap: AccountTest.java] 和 [Account.java]
+
+创建程序，在其中定义两个类：Account 和 AccountTest 类体会 Java 的封装性
+
+1. Account 类要求具有属性：姓名（长度为2、3、4位）、余额（必须 >20）、密码（必须是六位），如果不满足，则给出提示信息，并给默认值
+2. 通过 setXxx 的方法给 Account 的属性赋值
+3. 在 AccountTest 中测试
+
+[AccountTest.java]
+
+```java
+/**
+ * @author GuYuqi
+ * 2024/7/8 23:16
+ * 创建程序，在其中定义两个类：Account 和 AccountTest 类体会 Java 的封装性
+ *
+ * 1. Account 类要求具有属性：姓名（长度为2、3、4位）、余额（必须 >20）、密码（必须是六位），如果不满足，则给出提示信息，并给默认值
+ * 2. 通过 setXxx 的方法给 Account 的属性赋值
+ * 3. 在 AccountTest 中测试
+ */
+package com.hspedu.encap;
+
+public class AccountTest {
+
+    public static void main(String[] args) {
+        Account account = new Account("Jack", 30, "060130");
+        System.out.println(account.info());
+    }
+}
+
+```
+
+[Account.java]
+
+```java
+/**
+ * @author GuYuqi
+ * 2024/7/8 23:16
+ * 创建程序，在其中定义两个类：Account 和 AccountTest 类体会 Java 的封装性
+ *
+ * 1. Account 类要求具有属性：姓名（长度为2、3、4位）、余额（必须 >20）、密码（必须是六位），如果不满足，则给出提示信息，并给默认值
+ * 2. 通过 setXxx 的方法给 Account 的属性赋值
+ * 3. 在 AccountTest 中测试
+ */
+package com.hspedu.encap;
+
+public class Account {
+    String name;
+    double balance;
+    String passwork;
+
+    //构造器
+    public Account() {
+    }
+    public Account(String name, double balance, String passwork) {
+        this.name = name;
+        this.balance = balance;
+        this.passwork = passwork;
+        setBalance(balance);
+        setName(name);
+        setPasswork(passwork);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        //姓名 长度2、3、4位
+        if(name.length() >= 2 && name.length() <= 4) {
+            this.name = name;
+        } else {
+            System.out.println("姓名长度输入错误，给默认姓名");
+            this.name = "张三";
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        if(balance >= 20) {
+            this.balance = balance;
+        } else {
+            System.out.println("余额过低，给默认余额");
+            this.balance = 20;
+        }
+    }
+
+    public String getPasswork() {
+        return passwork;
+    }
+
+    public void setPasswork(String passwork) {
+        if(passwork.length() == 6) {
+            this.passwork = passwork;
+        } else {
+            System.out.println("密码长度输入错误，给默认密码");
+            this.passwork = "123456";
+        }
+    }
+
+    public String info() {
+        return name + " " + balance + " " + passwork;
+    }
+}
+```
+
+### 继承
+
+继承可以解决代码复用，让我们的编程更加靠近人类思维，当多个类存在相同的属性和方法时，可以从这些类中抽象出父类，在父类中定义这些相同的属性和方法，所有的子类不需要重新定义这些属性和方法，只需要通过 extends 来生命继承父类计科
+
+#### 基本语法
+
+```java
+class 子类 extends 父类 {
+    
+}
+```
+
+1. 子类就会自动拥有父类定义的属性和方法
+2. 父类又叫超类、基类
+3. 子类又叫派生类
+
+#### 快速入门
+
+改进[Extends01.java]，使用继承的方法
+
+改进前
+
+```java
+package com.hspedu.extend_;
+
+public class Extends01 {
+    public static void main(String[] args) {
+        Pupil pupil = new Pupil();
+        pupil.name = "银角大王";
+        pupil.age = 10;
+        pupil.testing();
+        pupil.setScore(60);
+        pupil.showInfo();
+
+        System.out.println("============");
+        Graduate graduate = new Graduate();
+        graduate.name = "金角大王";
+        graduate.age = 22;
+        graduate.testing();
+        graduate.setScore(100);
+        graduate.showInfo();
+    }
+}
+```
+
+```java
+package com.hspedu.extend_;
+//小学生 -> 模拟小学生考试的情况
+public class Pupil {
+    public String name;
+    public int age;
+    private double score;   //成绩
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void testing() {
+        System.out.println("小学生 " + name + " 正在考小学数学...");
+    }
+
+    public void showInfo() {
+        System.out.println("学生名 " + name + " 年龄 " + age + " 成绩 " + score);
+    }
+}
+```
+
+```java
+package com.hspedu.extend_;
+//大学生类 -> 模拟大学生考试的简单情况
+public class Graduate {
+    public String name;
+    public int age;
+    private double score;
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void testing() { //和 pupil 不一样
+        System.out.println("大学生 " + name + " 正在考大学数学...");
+    }
+
+    public void showInfo() {
+        System.out.println("学生名 " + name + " 年龄 " + age + " 成绩 " + score);
+    }
+}
+```
+
+改进后
+
+```java
+package com.hspedu.extend_.improve_;
+
+import com.hspedu.extend_.Graduate;
+import com.hspedu.extend_.Pupil;
+
+public class Extends01 {
+
+    public static void main(String[] args) {
+        com.hspedu.extend_.Pupil pupil = new Pupil();
+        pupil.name = "银角大王~";
+        pupil.age = 11;
+        pupil.testing();
+        pupil.setScore(50);
+        pupil.showInfo();
+
+        System.out.println("============");
+        com.hspedu.extend_.Graduate graduate = new Graduate();
+        graduate.name = "金角大王~";
+        graduate.age = 23;
+        graduate.testing();
+        graduate.setScore(80);
+        graduate.showInfo();
+    }
+}
+```
+
+```java
+package com.hspedu.extend_.improve_;
+
+//父类，是 Pupil 和 Graduate 的父类
+public class Student {
+    //共有属性
+    public String name;
+    public int age;
+    private double score;
+
+    //共有方法
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void showInfo() {
+        System.out.println("学生名 " + name + " 年龄 " + age + " 成绩 " + score);
+    }
+}
+```
+
+```java
+package com.hspedu.extend_.improve_;
+
+public class Pupil extends Student{
+    public void testing() {
+        System.out.println("小学生 " + name + " 正在考小学数学...");
+    }
+}
+```
+
+```java
+package com.hspedu.extend_.improve_;
+
+public class Graduate extends Student{
+    public void testing() {
+        System.out.println("大学生 " + name + " 正在考大学数学...");
+    }
+}
+```
+
+#### 继承带来的便利
+
+1. 代码的复用型提高了
+2. 代码的扩展性和维护性提高了
+
+#### 继承细节
+
+[com.hspedu.extend_ 包: ExtendsDetail.java]
+
+1. 子类继承了所有的属性和方法，非私有的属性和方法可以在子类直接访问，但是私有属性不能在子类直接访问，要通过父类提供公共的方法去访问
+2. 子类必须调用父类的构造器，完成父类的初始化
+3. 当创建子类对象时，不管使用子类的哪个构造器，默认情况在总会去调用父类的无参构造器，如果父类没有提供无参构造器，则必须在子类的构造器中用 super 去指定使用父类的哪个构造器完成对父类的初始化工作，否则，编译不通过
+4. 如果希望指定去调用父类的某个构造器，则显式的调用一下：super(参数列表)
+5. super 在使用时，必须放在构造器第一行（super 只能在构造器中使用）
+6. super() 和 this() 都只能放在构造器第一行，因此这两个方法不能共存在一个构造器
+7. Java 所有类都是 Object 类的子类，Object 是所有类的基类
+8. 父类构造器的调用不限于直接父类，将一直往上追溯到 Object 类（顶级父类）
+9. 子类最多只能继承一个父类（指直接继承），即 Java 中是单继承机制
+10. 不能滥用继承，子类和父类直接必须满足 is-a 的逻辑关系
+
+### 继承练习
+
+1. [ExtendsExercise01.java]
+
+```java
+class A {
+    A() {
+        System.out.println("a");
+    }
+    A(String name) {
+        System.out.println("a name");
+    }
+}
+
+class B extends A {
+    B() {
+        this("abc");
+        System.out.println("b");
+    }
+    B(String name) {
+        System.out.println("b name");
+    }
+}
+```
+
+main 函数中，B b = new B(); 会输出什么？
+
+```
+a
+b name
+b
+```
+
+2. [ExtendsExercise02.java]
+
+```java
+class A {
+    public A() {
+        System.out.println("我是 A 类");
+    }
+}
+
+class B extends A {
+    public B() {
+        System.out.println("我是 B 类的无参构造");
+    }
+    public B(String name) {
+        System.out.println(name + "我是 B 类的有参构造");
+    }
+}
+
+
+class C extends B {
+    public C() {
+        this("hello");
+        System.out.println("我是 C 类的无参构造");
+    }
+    public C(String name) {
+        super("hahah");
+        System.out.println("我是 C 类的有参构造");
+    }
+}
+```
+
+在 main 方法中：C c = new C(); 输出什么内容
+
+```
+我是 A 类
+hahah我是 B 类的有参构造
+我是 C 类的有参构造
+我是 C 类的无参构造
+```
+
+3. [ExtendsExercise03.java]
+
+编写 Computer 类，包含 CPU、内存、硬盘等属性，getDetails 方法用于返回Computer 的详细信息
+
+编写 PC 子类，继承 Computer 类，添加特有属性【品牌 brand】
+
+编写 NotePad 子类，继承 Computer 类，添加特有属性【演示 color】
+
+编写 Test 类，在 main 方法中创建 PC 和 NotePad 对象，分别给对象中特有的属性赋值，以及从 Computer 类继承的属性赋值，并使用方法并打印输出信息
+
+```java
+package com.hspedu.extend_.exercise.exercise03;
+
+public class ExtendsExercise03 {
+
+    public static void main(String[] args) {
+        PC pc = new PC("intel", 16, 500, "IBM");
+        pc.printInfo();
+
+        NotePad notePad = new NotePad("intel", 16, 500, "OK");
+        notePad.printInfo();
+    }
+}
+```
+
+```java
+package com.hspedu.extend_.exercise.exercise03;
+
+public class Computer {
+    private String cpu;
+    private int memory;
+    private int disk;
+
+    public Computer(String cpu, int memory, int disk) {
+        this.cpu = cpu;
+        this.memory = memory;
+        this.disk = disk;
+    }
+
+    //返回 Computer 信息
+    public String getDetails() {
+        return "CPU: " + cpu + "\nMemory: " + memory + "\nDisk: " + disk;
+    }
+
+    public String getCpu() {
+        return cpu;
+    }
+
+    public void setCpu(String cpu) {
+        this.cpu = cpu;
+    }
+
+    public int getMemory() {
+        return memory;
+    }
+
+    public void setMemory(int memory) {
+        this.memory = memory;
+    }
+
+    public int getDisk() {
+        return disk;
+    }
+
+    public void setDisk(int disk) {
+        this.disk = disk;
+    }
+}
+```
+
+```java
+package com.hspedu.extend_.exercise.exercise03;
+
+public class PC extends Computer{
+
+    private String brand;
+
+    public PC(String cpu, int memory, int disk, String brand) {
+        super(cpu, memory, disk);
+        this.brand = brand;
+    }
+
+    public void printInfo() {
+        System.out.println("PC 信息: ");
+        //调用父类的 getDetails 方法，得到相关属性信息
+        System.out.println(getDetails() + "\nbrand = " + brand);
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+}
+```
+
+```java
+package com.hspedu.extend_.exercise.exercise03;
+
+public class NotePad extends Computer{
+
+    private String color;
+
+    public NotePad(String cpu, int memory, int disk, String color) {
+        super(cpu, memory, disk);
+        this.color = color;
+    }
+
+    public void printInfo() {
+        System.out.println("NotePad 信息: ");
+        //调用父类的 getDetails 方法，得到相关属性信息
+        System.out.println(getDetails() + "\ncolor = " + color);
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+```
+
+## super 关键字
+
+super 代表父类的引用，用于访问父类的属性、方法、构造器
+
+### 基本语法
+
+访问父类的属性，但不能访问父类的 private 属性
+
+```java
+super.属性名;
+```
+
+访问父类的方法，但不能访问父类的 private 方法
+
+```java
+super.方法名(参数列表);
+```
+
+访问父类的构造器
+
+```java
+super(参数列表);	//只放在构造器的第一句，只能出现一句
+```
+
+### 细节
+
+1. 调用父类构造器的好处：分工明确，父类属性由父类初始化，子类的属性由子类初始化
+2. 当子类中有和父类中成员重名时，为了访问父类的成员，必须通过 super。如果没有重名，使用 super、this、直接访问都是一样的效果
+3. super 的访问不限于直接父类，如果爷爷类和本类中有同名的成员，也可以使用 super 去访问爷爷类的成员；如果多个基类（上级类）中都有同名的成员，使用 super 访问遵循就近原则，即 A -> B -> C
+
+### super 和 this 比较
+
+| No.  | 区别点     | this                                                   | super                                    |
+| ---- | ---------- | ------------------------------------------------------ | ---------------------------------------- |
+| 1    | 访问属性   | 访问本类中的属性，如果本类没有此属性则从父类中继续查找 | 从父类开始查找属性                       |
+| 2    | 调用方法   | 访问本类中的方法，如果本类没有此方法则从父类中继续查找 | 从父类开始查找方法                       |
+| 3    | 访问构造器 | 调用本类的构造器，必须放在构造器的首行                 | 调用父类构造器，必须放在子类构造器的首行 |
+| 4    | 特殊       | 表示当前对象                                           | 子类中访问父类对象                       |
+
+## 方法重写 / 覆盖（override）
+
+
+
+简单的说，方法覆盖（重写）就是子类有一个方法，和父类的某个方法的名称、返回类型、参数一样，那么我们就说子类的这个方法覆盖了父类的那个方法
+
+[com.hspedu.override_ 包下 Override01.java]
+
+```java
+package com.hspedu.override_;
+
+public class Override01 {
+
+    public static void main(String[] args) {
+
+        //方法重写
+        Dog dog = new Dog();
+        dog.cry();
+    }
+
+}
+```
+
+```java
+package com.hspedu.override_;
+
+public class Dog extends Animal{
+
+    //因为 Dog 是 Animal 子类
+    //Dog 的 cry 方法和 Animal 的 cry 定义类型一样
+    //这时我们说 Dog 的 cry 方法重写了 Animal 的 cry 方法
+    public void cry() {
+
+        System.out.println("小狗汪汪叫");
+    }
+}
+```
+
+```java
+package com.hspedu.override_;
+
+public class Animal {
+
+    public void cry() {
+        System.out.println("动物叫唤");
+    }
+}
+```
+
+### 细节
+
+方法重写也叫方法覆盖，需要满足下面的条件
+
+1. 子类的方法的参数，方法名称，要和父类方法的参数，方法名称完全一样
+2. 子类方法的返回类型和父类方法返回类型一样，或者是父类返回类型的子类
+3. 子类方法不能缩小父类方法的访问权限
+
+## 方法重写练习
+
+1. 比较重载和重写
+
+| 名称             | 发生范围 | 方法名   | 参数列表                       | 返回类型                                                   | 修饰符                             |
+| ---------------- | -------- | -------- | ------------------------------ | ---------------------------------------------------------- | ---------------------------------- |
+| 重载（Overload） | 本类     | 必须一样 | 类型、个数、顺序至少有一个不同 | 无要求                                                     | 无要求                             |
+| 重写（Override） | 父子类   | 必须一样 | 必须一样                       | 子类重写的方法返回的类型和父类返回的类型一致，或者是其子类 | 子类方法不能缩小父类方法的访问范围 |
+
+2. [OverrideExercise.java]
+
+   1. 编写一个 Person 类，包括属性 / private(name、age)，构造器、方法 say（返回自我介绍的字符串）
+   2. 编写一个 Student 类，继承 Person 类，增加 id、score属性 / private，以及构造器，定义 say 方法（返回自我介绍的信息）
+   3. 在 main 中，分别创建 Person 和 Student 对象，调用 say 方法输出自我介绍
+
+   ```java
+   /**
+    * @author GuYuqi
+    * 2024/7/10 17:26
+    * 1. 编写一个 Person 类，包括属性 / private(name、age)，构造器、方法 say（返回自我介绍的字符串）
+    * 2. 编写一个 Student 类，继承 Person 类，增加 id、score属性 / private，以及构造器，定义 say 方法（返回自我介绍的信息）
+    * 3. 在 main 中，分别创建 Person 和 Student 对象，调用 say 方法输出自我介绍
+    */
+   package com.hspedu.override_;
+   
+   public class OverrideExercise {
+   
+       public static void main(String[] args) {
+   
+           //new 对象
+           Person person = new Person("Jack", 16);
+           Student student = new Student("Jack", 16, 10000, 100);
+   
+           //调用say
+           System.out.println(person.say());
+           System.out.println(student.say());
+       }
+   }
+   ```
+
+   ```java
+   /**
+    * @author GuYuqi
+    * 2024/7/10 17:26
+    * 1. 编写一个 Person 类，包括属性 / private(name、age)，构造器、方法 say（返回自我介绍的字符串）
+    * 2. 编写一个 Student 类，继承 Person 类，增加 id、score属性 / private，以及构造器，定义 say 方法（返回自我介绍的信息）
+    * 3. 在 main 中，分别创建 Person 和 Student 对象，调用 say 方法输出自我介绍
+    */
+   package com.hspedu.override_;
+   
+   public class Student extends Person{
+   
+       //属性
+       private int id;
+       private int score;
+   
+       //构造器
+       public Student(String name, int age, int id, int score) {
+           super(name, age);
+           this.id = id;
+           this.score = score;
+       }
+   
+       //方法 say
+       public String say() {
+           return super.say() + ", id: " + id + ", score: " + score;
+       }
+   
+       public int getId() {
+           return id;
+       }
+   
+       public void setId(int id) {
+           this.id = id;
+       }
+   
+       public int getScore() {
+           return score;
+       }
+   
+       public void setScore(int score) {
+           this.score = score;
+       }
+   }
+   ```
+
+   ```java
+   /**
+    * @author GuYuqi
+    * 2024/7/10 17:26
+    * 1. 编写一个 Person 类，包括属性 / private(name、age)，构造器、方法 say（返回自我介绍的字符串）
+    * 2. 编写一个 Student 类，继承 Person 类，增加 id、score属性 / private，以及构造器，定义 say 方法（返回自我介绍的信息）
+    * 3. 在 main 中，分别创建 Person 和 Student 对象，调用 say 方法输出自我介绍
+    */
+   package com.hspedu.override_;
+   
+   public class Person {
+       //属性
+       private String name;
+       private int age;
+   
+       //构造器
+       public Person(String name, int age) {
+           this.name = name;
+           this.age = age;
+       }
+   
+       //方法 say
+       public String say() {
+           return "Hello " + name + " " + age + "!";
+       }
+   
+       public String getName() {
+           return name;
+       }
+   
+       public void setName(String name) {
+           this.name = name;
+       }
+   
+       public int getAge() {
+           return age;
+       }
+   
+       public void setAge(int age) {
+           this.age = age;
+       }
+   }
+   ```
+
+## 多态
+
+请编写一个程序，Master 类 中有一个 feed（喂食） 方法，可以完成主人给动物喂食的信息[com.hspedu.poly_: Poly01.java]
+
+程序中如果动物很多，食物很多，那 feed 方法就会很多，不利于管理维护，代码复用性不高，而且不利于代码维护，解决方案就是多态
+
+
+
+
+
+方法和对象具有多种形态。是面向对象的第三大特征，多态是建立在封装和继承基础之上的
+
+方法的多态：
+
+[PloyMethod.java]
+
+对象的多态（核心、重点、困难）：
+
+[com.hspedu.poly_.objpoly: PolyObject.java]
+
+1. 一个对象的编译类型和运行类型可以不一致
+
+   ```java
+   Animal animal = new Dog();
+   /*
+   animal 的编译类型是 Animal，运行类型是 Dog
+   */
+   ```
+
+2. 编译类型在定义对象时，就确定了，不能改变
+
+3. 运行类型是可以变化的
+
+   ```java
+   animal = new Cat();
+   /*
+   animal 的运行类型变成了 Cat，编译类型仍然是 Animal
+   */
+   ```
+
+4. 编译类型看定义时 = 号的左边，运行类型看 = 号的右边
+
+
+
+多态的前提：两个对象（类）存在继承关系
+
+### 向上转型
+
+1. 本质：父类的引用指向了子类的对象
+
+2. 语法：父类类型 引用名 = new 子类类型();
+
+3. 特点：编译类型看左边，运行类型看右边
+
+   ​	可以调用父类中的所有成员（需遵守访问权限）
+
+   ​	不能调用子类中特有成员
+
+   ​	最终运行效果看子类的具体实现
