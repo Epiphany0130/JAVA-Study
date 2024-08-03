@@ -6513,3 +6513,417 @@ public class Animal {
    ​	不能调用子类中特有成员
 
    ​	最终运行效果看子类的具体实现
+
+### 向下转型
+
+1. 语法： 子类类型 引用名 = (子类类型) 父类引用;
+2. 只能强转父类的引用，不能强转父类的对象
+3. 要求父类的引用必须指向的是当前目标类型的对象
+4. 当向下转型后，可以调用子类类型中所有的成员
+
+### 属性重写问题
+
+属性没有重写之说！属性的值看编译类型
+
+instanceOf 比较操作符，用于判断对象的运行类型是否为 XX 类型或 XX 类型的子类型
+
+## 多态练习
+
+1. 请说出下面每条语句，哪些是正确的，哪些是错误的，为什么？[PolyExercise01.java]
+
+```java
+package com.hspedu.poly_.exercise_;
+
+public class PolyExercise01 {
+    public static void main(String[] args) {
+        double d = 13.4;
+        long l = (long) d;
+        System.out.println(l);
+        int in = 5;
+        boolean b = (boolean)in;
+        Object obj = "Hello";
+        String objStr = (String)obj;
+        System.out.println(objStr);
+
+        Object objPri = new Integer(5);
+        String str = (String)objPri;
+        Integer str1 = (Integer)objPri;
+    }
+}
+```
+
+```java
+package com.hspedu.poly_.exercise_;
+
+public class PolyExercise01 {
+    public static void main(String[] args) {
+        double d = 13.4;
+        long l = (long) d;
+        System.out.println(l);
+        int in = 5;
+        boolean b = (boolean)in;		//错 boolean --> int
+        Object obj = "Hello";			//对，向上转型
+        String objStr = (String)obj;	 //对，向下转型
+        System.out.println(objStr);
+
+        Object objPri = new Integer(5);	 //对，向上转型
+        String str = (String)objPri;	 //错，指向 Integer 的父类引用转成 String
+        Integer str1 = (Integer)objPri;	 //对，向下转型
+    }
+}
+```
+
+2. [PolyExercise02.java]
+
+```java
+package com.hspedu.poly_.exercise_;
+
+public class PolyExercise02 {
+    public static void main(String[] args) {
+        Sub0 s = new Sub0();
+        System.out.println(s.count);
+        s.display();
+        Base0 b = s;
+        System.out.println(b == s);
+        System.out.println(b.count);
+        b.display();
+    }
+}
+
+class Base0 {
+    int count = 10;
+    public void display() {
+        System.out.println(this.count);
+    }
+}
+
+class Sub0 extends Base0 {
+    int count = 20;
+    public void display() {
+        System.out.println(this.count);
+    }
+}
+```
+
+## 动态绑定机制
+
+[DynamicBinding.java  com.hspedu.poly_.dynamic\_]
+
+```java
+package com.hspedu.poly_.dynamic_;
+
+class A {
+    public int i = 10;
+
+    public int sum() {
+        return getI() + 10;
+    }
+
+    public int sum1() {
+        return i + 10;
+    }
+
+    public int getI() {
+        return i;
+    }
+}
+
+class B extends A {
+    public int i = 20;
+
+    public int sum() {
+        return i + 20;
+    }
+
+    public int getI() {
+        return i;
+    }
+
+    public int sum1() {
+        return i + 10;
+    }
+}
+
+public class DynamicBinding {       //dynamic - 动态   binding - 绑定 / 结合
+    public static void main(String[] args) {
+        A a = new B();
+        System.out.println(a.sum());
+        System.out.println(a.sum1());
+    }
+}
+```
+
+运行结果 40 30 毫无疑问
+
+如果把 B 类中的 sum 方法注释掉
+
+```java
+package com.hspedu.poly_.dynamic_;
+
+class A {
+    public int i = 10;
+
+    public int sum() {
+        return getI() + 10;		//B 中的 getI
+    }
+
+    public int sum1() {
+        return i + 10;
+    }
+
+    public int getI() {
+        return i;
+    }
+}
+
+class B extends A {
+    public int i = 20;
+
+    public int getI() {
+        return i;
+    }
+
+    public int sum1() {
+        return i + 10;
+    }
+}
+
+public class DynamicBinding {       //dynamic - 动态   binding - 绑定 / 结合
+    public static void main(String[] args) {
+        A a = new B();
+        System.out.println(a.sum());
+        System.out.println(a.sum1());
+    }
+}
+```
+
+运行结果为 30 30
+
+如果把 B 类中的 sum1 方法也注释掉
+
+```java
+package com.hspedu.poly_.dynamic_;
+
+class A {
+    public int i = 10;
+
+    public int sum() {
+        return getI() + 10;		//B 中的 getI
+    }
+
+    public int sum1() {
+        return i + 10;
+    }
+
+    public int getI() {
+        return i;
+    }
+}
+
+class B extends A {
+    public int i = 20;
+
+    public int getI() {
+        return i;
+    }
+}
+
+public class DynamicBinding {       //dynamic - 动态   binding - 绑定 / 结合
+    public static void main(String[] args) {
+        A a = new B();
+        System.out.println(a.sum());
+        System.out.println(a.sum1());
+    }
+}
+```
+
+运行结果为 30 20
+
+
+
+1. 当调用对象方法的时候，该方法和该对象的内存地址 / 运行类型绑定
+2. 当调用对象属性时，没有动态绑定机制，哪里声明，哪里使用
+
+## 多态数组
+
+数组的定义类型为父类类型，里面保存的实际元素类型为子类类型
+
+[com.hspedu.poly_.polyarr__ PloyArray.java]
+
+应用实例：
+
+​	现有一个继承结构如下：
+
+![](D:\My_study\JAVA-Study\chapter08\屏幕截图 2024-08-02 210603.png)
+
+​	要求创建一个 Person 对象、两个 Student 对象和两个 Teacher 对象，统一放在数组中，并调用 say 方法
+
+
+
+应用实例升级：
+
+​	如何调用子类特有的方法，比如 Teacher 有一个 teach，Student 有一个 study 怎么调用？
+
+## 多态参数
+
+方法定义的形参类型为父类类型，实参类型允许为子类类型
+
+应用实例1：前面的主人喂动物
+
+应用实例2：[com.hspedu.poly_.polyparameter__ 包 PloyParameter.java]
+
+​	定义员工类 Employee，包含姓名和月工资[private]，以及计算年工资getAnnual的方法。普通员工和经理集成了员工，经理继承了奖金 bonus 属性和管理 manage 方法，普通员工类多了 work 方法，普通员工和经理类要求分别重写 getAnnual 方法
+
+​	测试类中添加一个方法 showEmpAnnal(Employee e)，实现获取任何员工对象的年工资，并在 main 方法中调用该方法[e.getAnnual()]
+
+​	测试类中添加一个方法，testWork，如果是普通员工，则调用 work 方法，如果是经理，则调用 manage 方法
+
+## Object 类详解
+
+### equals 
+
+== 和 equals 的对比
+
+[com.hspedu.object_ : Equals01.java]
+
+==是一个运算符
+
+1. ==：既可以判断基本类型，又可以判断引用类型
+2. ==：如果判断引用类型，判断的是值是否相等。示例：int i = 10; double d = 10;
+3. ==：如果判断引用类型，判断的是地址是否相等
+4. equals：是 Object 类中的方法，只能判断引用类型
+5. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如 Integer，String
+
+判断两个 Person 对象的内容是否相等，如果两个 Person 对象的各个属性值都一样，则返回 true，反之返回 false[EqualsExercise01.java]
+
+```java
+package com.hspedu.object_;
+
+public class EqualsExercise01 {
+
+    public static void main(String[] args) {
+        Person person1 = new Person("jack", 10, '男');
+        Person person2 = new Person("jack", 10, '男');
+
+        System.out.println(person1.equals(person2));
+    }
+}
+
+class Person {
+    private String name;
+    private int age;
+    private char gender;
+
+    //重写 Object 的 equals 方法
+    public boolean equals(Object obj) {
+        //判断如果比较的两个对象是同一个对象，则直接返回 true
+        if(this == obj) {
+            return true;
+        }
+        //类型判断
+        if(obj instanceof Person) {
+
+            Person p = (Person)obj;    //向下转型，因为需要 obj 的各个属性
+            return this.name.equals(p.name) && this.age == p.age && this.gender == p.gender;
+        }
+        //如果不是 Person，则直接返回 false
+        return false;
+    }
+
+    public Person(String name, int age, char gender) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+写出输出结果[EqualsExercise02.java]
+
+```java
+package com.hspedu.object_;
+
+public class EqualsExercise02 {
+
+    public static void main(String[] args) {
+        Person1 p1 = new Person1();
+        p1.name = "hspedu";
+
+        Person1 p2 = new Person1();
+        p2.name = "hspedu";
+
+        System.out.println(p1 == p2);
+        System.out.println(p1.name.equals(p2.name));
+        System.out.println(p1.equals(p2));
+
+        String s1 = new String("asdf");
+
+        String s2 = new String("asdf");
+        System.out.println(s1.equals(s2));
+        System.out.println(s1 == s2);
+    }
+}
+
+class Person1 {
+    public String name;
+}
+```
+
+```
+false
+true
+false
+true
+false
+```
+
+### hashCode
+
+1. 提高具有哈希结构的容器的效率！
+2. 两个引用，如果指向的是同一个对象，则哈希值肯定是一样的！
+3. 两个引用，如果指向的是不同对象，则哈希值是一样的
+4. 哈希值主要根据地址号来的，不能完全将哈希值等价于地址
+5. 后面在集合中，hashCode 如果需要的话，也会重写
+
+### toString
+
+默认返回：全类名 + @ + 哈希值的十六进制
+
+子类往往重写 toString 方法，用于返回对象的属性信息
+
+源码：
+
+```java
+public String toString() {
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+    }
+```
+
+当世界输出一个对象时，toString 方法会被默认调用
+
+### finalize
+
