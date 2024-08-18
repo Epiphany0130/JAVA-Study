@@ -68,6 +68,8 @@ public class SmallChangeSys {
                         loop = false;
                     }
                     break;
+                default:
+                    System.out.println("选择有误，请重新选择");
             }
         }while (loop);
 
