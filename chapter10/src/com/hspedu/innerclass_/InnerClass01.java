@@ -18,6 +18,5 @@ class Outer {
         this.n1 = n1;
     }
     class Inner {   //内部类
-
     }
 }

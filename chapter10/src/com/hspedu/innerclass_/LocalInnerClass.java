@@ -25,6 +25,7 @@ class Outer02 { //外部类
         }
 //        class Inner03 extends Inner02 { //局部内部类
 //        }
+
         //6. 外部类在方法中可以创建 Inner02 对象，然后调用方法
         Inner02 inner02 = new Inner02();
         inner02.f1();
