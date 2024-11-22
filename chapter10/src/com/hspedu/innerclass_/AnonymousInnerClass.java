@@ -25,6 +25,25 @@ class Outer04 { //外部类
         //底层会分配类名：类名 + $1
         System.out.println("tiger 的运行类型 = " + tiger.getClass());
         tiger.cry();
+        //演示基于类的内部类
+        Father father = new Father("jack") {
+            @Override
+            public void test() {
+                System.out.println("匿名内部类重写了 test 方法");
+            }
+        };
+        System.out.println("father对象的运行类型=" + father.getClass());
+        father.test();
+
+        //基于抽象类的匿名内部类
+        Animal animal = new Animal() {
+            @Override
+            void eat() {
+                System.out.println("小狗吃骨头");
+            }
+        };
+        animal.eat();
+
     }
 }
 interface IA {   //接口
@@ -52,4 +71,7 @@ class Father {  //类
     public void test() {    //方法
 
     }
+}
+abstract class Animal {
+    abstract void eat();
 }
